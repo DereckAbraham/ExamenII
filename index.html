@@ -10,12 +10,7 @@
 <body>
     <header class="header">
         <div class="contenedor">
-            <img src="https://cdn-icons-png.freepik.com/512/456/456212.png" alt="" class="perfil">
-            <span class="nombre-usuario"><br></span>
-            <span id="tareas-usuario"></span>
-            <span id="contador-tareas">Tareas: 0</span>
             <button class="btnInicio" id="btnModal">Agregar Nuevo Usuario</button>
-            <button class="btnAgregarTarea" id="btnAgregarTarea">+</button>
         </div>
     </header>
 
@@ -23,7 +18,7 @@
     <div id="modal" class="modal">
         <div class="modal-contenido">
             <span class="cerrar" id="cerrarModal">&times;</span>
-            <h2>Iniciar Sesión</h2>
+            <h2>Agregar Usuario</h2>
             <form id="formLogin">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" required>
@@ -31,15 +26,12 @@
                 <input type="email" id="email" name="email" required>
                 <label for="password">Contraseña:</label>
                 <input type="password" id="password" name="password" required>
-                <button type="submit">Iniciar Sesión</button>
+                <button type="submit">Agregar Usuario</button>
             </form>
         </div>
     </div>
 
-    <div class="contenedor-tareas">
-        <h2>Tareas Pendientes</h2>
-        <ul id="listaTareas"></ul>
-    </div>
+    <div id="usuarios" class="contenedor-usuarios"></div>
     
     <script src="./js/main.js"></script>
 </body>
