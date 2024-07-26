@@ -50,7 +50,9 @@ function inicializar() {
         });
 
         let formulario = modal.querySelector('#formulario-registro');
-        formulario.addEventListener('submit', function() {
+        formulario.addEventListener('submit', function(event) {
+            event.preventDefault();
+
             let nombreUsuario = formulario.querySelector('#nombre-usuario').value;
             let correo = formulario.querySelector('#correo').value;
 
@@ -63,8 +65,11 @@ function inicializar() {
                     <div class="user-info-content">
                         <p>Nombre: ${nombreUsuario}</p>
                         <p>Correo: ${correo}</p>
-                        <button class="add-task-btn" data-usuario="${contadorUsuarios}">Agregar Tarea</button>
                     </div>
+                   <div class="botonesAgregar">
+                    <p id="task-count-${contadorUsuarios}">0</p>
+                    <button class="add-task-btn" data-usuario="${contadorUsuarios}">+</button>
+                   </div>
                     <div class="user-icon">
                         <i class="fas fa-user-circle"></i>
                     </div>
@@ -80,8 +85,14 @@ function inicializar() {
                     if (tarea) {
                         let listaTareas = document.querySelector(`#task-list-${idUsuario}`);
                         let nuevaTarea = document.createElement('div');
+                        nuevaTarea.classList.add('task-item');
                         nuevaTarea.textContent = tarea;
                         listaTareas.appendChild(nuevaTarea);
+
+                        // Actualizar el contador de tareas
+                        let contadorTareas = document.querySelector(`#task-count-${idUsuario}`);
+                        let cantidadActualTareas = parseInt(contadorTareas.textContent);
+                        contadorTareas.textContent = `${cantidadActualTareas + 1}`;
                     }
                 });
             });
