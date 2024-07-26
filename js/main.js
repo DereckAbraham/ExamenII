@@ -1,98 +1,97 @@
 let root = document.querySelector("#root");
-let userCounter = 0;
+let contadorUsuarios = 0;
 
 let componentes = `
-  <button class="agregar-usuario-btn">Agregar nuevo usuario</button>
-  <div id="user-info"></div>
+  <header>
+    <button class="agregar-usuario-btn">Agregar nuevo usuario</button>
+  </header>
+  <div id="info-usuario"></div>
 `;
 
 root.innerHTML = componentes;
 
-function initialize() {
+function inicializar() {
     let btn = document.querySelector('.agregar-usuario-btn');
+    btn.addEventListener('click', abrirModal);
 
-    btn.addEventListener('click', openModal);
-
-    function openModal() {
+    function abrirModal() {
         let modal = document.createElement('div');
         modal.id = 'modal';
         modal.classList.add('modal');
-        
+
         modal.innerHTML = `
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <h2>Registro</h2>
-                <form id="login-form">
-                    <label for="username">Usuario:</label>
-                    <input type="text" id="username" name="username" required>
+                <form id="formulario-registro">
+                    <label for="nombre-usuario">Usuario:</label>
+                    <input type="text" id="nombre-usuario" name="nombre-usuario" required>
                     <br>
-                    <label for="email">Correo:</label>
-                    <input type="email" id="email" name="email" required>
+                    <label for="correo">Correo:</label>
+                    <input type="email" id="correo" name="correo" required>
                     <br>
-                    <button class="btnSubir" type="submit">Enviar</button>
+                    <button class="btnSubir modal-submit-btn" type="submit">Enviar</button>
                 </form>
             </div>
         `;
         root.appendChild(modal);
 
-        let closeBtn = modal.querySelector('.close');
-        closeBtn.onclick = function() {
+        let botonCerrar = modal.querySelector('.close');
+        botonCerrar.addEventListener('click', function() {
             modal.style.display = 'none';
             modal.remove();
-        }
+        });
 
-        window.onclick = function(event) {
-            if (event.target == modal) {
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
                 modal.style.display = 'none';
                 modal.remove();
             }
-        }
+        });
 
-        let form = modal.querySelector('#login-form');
-        form.onsubmit = function(event) {
-            event.preventDefault();
-            
-            let username = form.querySelector('#username').value;
-            let email = form.querySelector('#email').value;
-            
-            userCounter++;
+        let formulario = modal.querySelector('#formulario-registro');
+        formulario.addEventListener('submit', function() {
+            let nombreUsuario = formulario.querySelector('#nombre-usuario').value;
+            let correo = formulario.querySelector('#correo').value;
 
-            let userInfo = document.getElementById('user-info');
-            userInfo.innerHTML += `
-                <div class="user-profile" id="user-profile-${userCounter}">
-                    <img src="https://pbs.twimg.com/profile_images/1741493705884749825/tFPuUQW-_400x400.jpg" alt="Perfil">
+            contadorUsuarios++;
+
+            let infoUsuario = document.getElementById('info-usuario');
+            infoUsuario.innerHTML += `
+                <div class="user-profile" id="perfil-usuario-${contadorUsuarios}">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH7Z6RxTG-C_tGQOI_GpF6Oog7JbYkyPTfvw&s" alt="Perfil">
                     <div class="user-info-content">
-                        <p>Nombre: ${username}</p>
-                        <p>Correo: ${email}</p>
-                        <button class="add-task-btn" data-user="${userCounter}">Agregar Tarea</button>
+                        <p>Nombre: ${nombreUsuario}</p>
+                        <p>Correo: ${correo}</p>
+                        <button class="add-task-btn" data-usuario="${contadorUsuarios}">Agregar Tarea</button>
                     </div>
                     <div class="user-icon">
                         <i class="fas fa-user-circle"></i>
                     </div>
-                    <div class="task-list">
-                        <ul id="task-list-${userCounter}"></ul>
+                    <div class="task-list" id="task-list-${contadorUsuarios}">
                     </div>
                 </div>
             `;
 
-            let addTaskBtns = document.querySelectorAll('.add-task-btn');
-            addTaskBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    let userId = this.getAttribute('data-user');
-                    let task = prompt('Ingrese la tarea:');
-                    if (task) {
-                        let taskList = document.querySelector(`#task-list-${userId}`);
-                        let newTask = document.createElement('div');
-                        newTask.textContent = task;
-                        taskList.appendChild(newTask);
+            document.querySelectorAll('.add-task-btn').forEach(boton => {
+                boton.addEventListener('click', function() {
+                    let idUsuario = this.getAttribute('data-usuario');
+                    let tarea = prompt('Ingrese la tarea:');
+                    if (tarea) {
+                        let listaTareas = document.querySelector(`#task-list-${idUsuario}`);
+                        let nuevaTarea = document.createElement('div');
+                        nuevaTarea.textContent = tarea;
+                        listaTareas.appendChild(nuevaTarea);
                     }
                 });
             });
-            
+
             modal.style.display = 'none';
             modal.remove();
-        }
+        });
+
         modal.style.display = 'block';
     }
 }
-document.addEventListener('DOMContentLoaded', initialize);
+
+document.addEventListener('DOMContentLoaded', inicializar);
