@@ -132,8 +132,14 @@ input[type="text"], input[type="email"] {
     margin-right: 15px;
 }
 
+.task-info{
+    width: 10rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
 .task-count{
-    background-color: red;
     font-size: 2rem;
 }
 

@@ -30,7 +30,7 @@ function inicializar() {
                     <label for="correo">Correo:</label>
                     <input type="email" id="correo" name="correo" required>
                     <br>
-                    <button class="btnSubir modal-submit-btn" type="submit">Enviar</button>
+                    <button class="btnSubir modal-submit-btn" type="button" id="submit-btn">Enviar</button>
                 </form>
             </div>
         `;
@@ -49,10 +49,9 @@ function inicializar() {
             }
         });
 
-        let formulario = modal.querySelector('#formulario-registro');
-        formulario.addEventListener('submit', function(event) {
-            event.preventDefault();
-
+        let submitBtn = modal.querySelector('#submit-btn');
+        submitBtn.addEventListener('click', function() {
+            let formulario = modal.querySelector('#formulario-registro');
             let nombreUsuario = formulario.querySelector('#nombre-usuario').value;
             let correo = formulario.querySelector('#correo').value;
 
@@ -66,10 +65,10 @@ function inicializar() {
                         <p>Nombre: ${nombreUsuario}</p>
                         <p>Correo: ${correo}</p>
                     </div>
-                   <div class="botonesAgregar">
-                    <p id="task-count-${contadorUsuarios}">0</p>
-                    <button class="add-task-btn" data-usuario="${contadorUsuarios}">+</button>
-                   </div>
+                    <div class="task-info">
+                        <p id="task-count-${contadorUsuarios}" class="task-count">0</p>
+                        <button class="add-task-btn" data-usuario="${contadorUsuarios}">+</button>
+                    </div>
                     <div class="user-icon">
                         <i class="fas fa-user-circle"></i>
                     </div>
