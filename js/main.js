@@ -30,7 +30,7 @@ function inicializar() {
                     <label for="correo">Correo:</label>
                     <input type="email" id="correo" name="correo" required>
                     <br>
-                    <button class="btnSubir modal-submit-btn" type="button" id="submit-btn">Enviar</button>
+                    <button class="btnSubir modal-submit-btn" type="button">Enviar</button>
                 </form>
             </div>
         `;
@@ -49,9 +49,8 @@ function inicializar() {
             }
         });
 
-        let submitBtn = modal.querySelector('#submit-btn');
-        submitBtn.addEventListener('click', function() {
-            let formulario = modal.querySelector('#formulario-registro');
+        let formulario = modal.querySelector('#formulario-registro');
+        formulario.querySelector('.modal-submit-btn').addEventListener('click', function() {
             let nombreUsuario = formulario.querySelector('#nombre-usuario').value;
             let correo = formulario.querySelector('#correo').value;
 
@@ -65,7 +64,7 @@ function inicializar() {
                         <p>Nombre: ${nombreUsuario}</p>
                         <p>Correo: ${correo}</p>
                     </div>
-                    <div class="task-info">
+                    <div class="botonesAgregar">
                         <p id="task-count-${contadorUsuarios}" class="task-count">0</p>
                         <button class="add-task-btn" data-usuario="${contadorUsuarios}">+</button>
                     </div>
@@ -80,19 +79,7 @@ function inicializar() {
             document.querySelectorAll('.add-task-btn').forEach(boton => {
                 boton.addEventListener('click', function() {
                     let idUsuario = this.getAttribute('data-usuario');
-                    let tarea = prompt('Ingrese la tarea:');
-                    if (tarea) {
-                        let listaTareas = document.querySelector(`#task-list-${idUsuario}`);
-                        let nuevaTarea = document.createElement('div');
-                        nuevaTarea.classList.add('task-item');
-                        nuevaTarea.textContent = tarea;
-                        listaTareas.appendChild(nuevaTarea);
-
-                        // Actualizar el contador de tareas
-                        let contadorTareas = document.querySelector(`#task-count-${idUsuario}`);
-                        let cantidadActualTareas = parseInt(contadorTareas.textContent);
-                        contadorTareas.textContent = `${cantidadActualTareas + 1}`;
-                    }
+                    mostrarModalTarea(idUsuario);
                 });
             });
 
@@ -101,6 +88,61 @@ function inicializar() {
         });
 
         modal.style.display = 'block';
+    }
+
+    function mostrarModalTarea(idUsuario) {
+        let modalTarea = document.createElement('div');
+        modalTarea.id = 'modal-tarea';
+        modalTarea.classList.add('modal');
+
+        modalTarea.innerHTML = `
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Agregar Tarea</h2>
+                <form id="formulario-tarea">
+                    <label for="descripcion-tarea">Descripción:</label>
+                    <input type="text" id="descripcion-tarea" name="descripcion-tarea" required>
+                    <br>
+                    <button class="btnSubir modal-submit-btn" type="button">Agregar</button>
+                </form>
+            </div>
+        `;
+        root.appendChild(modalTarea);
+
+        let botonCerrar = modalTarea.querySelector('.close');
+        botonCerrar.addEventListener('click', function() {
+            modalTarea.style.display = 'none';
+            modalTarea.remove();
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target === modalTarea) {
+                modalTarea.style.display = 'none';
+                modalTarea.remove();
+            }
+        });
+
+        let formularioTarea = modalTarea.querySelector('#formulario-tarea');
+        formularioTarea.querySelector('.modal-submit-btn').addEventListener('click', function() {
+            let tarea = formularioTarea.querySelector('#descripcion-tarea').value;
+
+            if (tarea !== "") {
+                let listaTareas = document.querySelector(`#task-list-${idUsuario}`);
+                let nuevaTarea = document.createElement('div');
+                nuevaTarea.classList.add('task-item');
+                nuevaTarea.textContent = tarea;
+                listaTareas.appendChild(nuevaTarea);
+
+                // Actualizar el contador de tareas
+                let contadorTareas = document.querySelector(`#task-count-${idUsuario}`);
+                contadorTareas.textContent = parseInt(contadorTareas.textContent) + 1;
+
+                modalTarea.style.display = 'none';
+                modalTarea.remove();
+            }
+        });
+
+        modalTarea.style.display = 'block';
     }
 }
 
